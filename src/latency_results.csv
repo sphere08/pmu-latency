@@ -1,0 +1,2 @@
+cpu_atom/cycles,cpu_core/cycles,cpu_atom/instructions,cpu_core/instructions,cpu_atom/cache-references,cpu_core/cache-references,cpu_atom/cache-misses,cpu_core/cache-misses,cpu_atom/branch-instructions,cpu_core/branch-instructions,cpu_atom/branch-misses,cpu_core/branch-misses,cpu_atom/bus-cycles,cpu_core/bus-cycles
+91076651,122876830,67652592,119539852,3491059,5302509,1299335,1508359,12059427,22479796,482054,616220,204251775,281894080
