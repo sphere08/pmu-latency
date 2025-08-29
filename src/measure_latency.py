@@ -42,7 +42,6 @@ def parse_perf_output(output):
     return data
 
 def save_to_csv(data, filename="../results/csv_files/latency_results.csv"):
-    # Ensure the nested directory exists
     os.makedirs(os.path.dirname(filename), exist_ok=True)
 
     df = pd.DataFrame([data])
