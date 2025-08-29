@@ -5,7 +5,7 @@ import os
 import datetime
 import time
 
-def run_perf():
+def run_perf(duration=1):
     try:
         result = subprocess.run(
             [
@@ -18,7 +18,7 @@ def run_perf():
                 "cpu_atom/branch-instructions/,cpu_core/branch-instructions/,"
                 "cpu_atom/branch-misses/,cpu_core/branch-misses/,"
                 "cpu_atom/bus-cycles/,cpu_core/bus-cycles/",
-                "sleep", "1"
+                "sleep", str(duration)
             ],
             stderr=subprocess.PIPE,
             text=True
@@ -41,7 +41,10 @@ def parse_perf_output(output):
                 continue
     return data
 
-def save_to_csv(data, filename="latency_results.csv"):
+def save_to_csv(data, filename="../results/csv_files/latency_results.csv"):
+    # Ensure the nested directory exists
+    os.makedirs(os.path.dirname(filename), exist_ok=True)
+
     df = pd.DataFrame([data])
     if not os.path.exists(filename):
         df.to_csv(filename, index=False)
@@ -49,12 +52,13 @@ def save_to_csv(data, filename="latency_results.csv"):
         df.to_csv(filename, mode="a", index=False, header=False)
 
 if __name__ == "__main__":
-    runs = 5
+    runs = 10
     interval = 2
+    duration = 1
 
     for i in range(runs):
         print(f"\n=== Run {i+1} of {runs} ===")
-        output = run_perf()
+        output = run_perf(duration)
         parsed = parse_perf_output(output)
 
         if not parsed:
