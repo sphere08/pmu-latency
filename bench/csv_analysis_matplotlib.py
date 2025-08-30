@@ -17,10 +17,14 @@ def compute_metrics(df):
         return a / b.replace(0, float("nan"))
     df["IPC_core"] = safe_div(df["cpu_core/instructions"], df["cpu_core/cycles"])
     df["IPC_atom"] = safe_div(df["cpu_atom/instructions"], df["cpu_atom/cycles"])
+    df["CPI_core"] = safe_div(df["cpu_core/cycles"], df["cpu_core/instructions"])
+    df["CPI_atom"] = safe_div(df["cpu_atom/cycles"], df["cpu_atom/instructions"])
     df["CacheMissRate_core"] = safe_div(df["cpu_core/cache-misses"], df["cpu_core/cache-references"])
     df["CacheMissRate_atom"] = safe_div(df["cpu_atom/cache-misses"], df["cpu_atom/cache-references"])
     df["BranchMissRate_core"] = safe_div(df["cpu_core/branch-misses"], df["cpu_core/branch-instructions"])
     df["BranchMissRate_atom"] = safe_div(df["cpu_atom/branch-misses"], df["cpu_atom/branch-instructions"])
+    df["BusCycles_core"] = df["cpu_core/bus-cycles"]
+    df["BusCycles_atom"] = df["cpu_atom/bus-cycles"]
     return df
 
 def plot_metrics(df):
@@ -36,6 +40,17 @@ def plot_metrics(df):
     plt.legend()
     plt.tight_layout()
     plt.savefig(os.path.join(output_dir, "ipc_trend.png"))
+    plt.close()
+
+    plt.figure(figsize=(10,6))
+    plt.plot(df["timestamp"], df["CPI_core"], label="Core CPI")
+    plt.plot(df["timestamp"], df["CPI_atom"], label="Atom CPI")
+    plt.xticks(rotation=45)
+    plt.ylabel("Cycles per Instruction (CPI)")
+    plt.title("Atom vs Core CPI over Time")
+    plt.legend()
+    plt.tight_layout()
+    plt.savefig(os.path.join(output_dir, "cpi_trend.png"))
     plt.close()
 
     plt.figure(figsize=(10,6))
@@ -58,6 +73,17 @@ def plot_metrics(df):
     plt.legend()
     plt.tight_layout()
     plt.savefig(os.path.join(output_dir, "branch_miss_trend.png"))
+    plt.close()
+
+    plt.figure(figsize=(10,6))
+    plt.plot(df["timestamp"], df["BusCycles_core"], label="Core Bus Cycles")
+    plt.plot(df["timestamp"], df["BusCycles_atom"], label="Atom Bus Cycles")
+    plt.xticks(rotation=45)
+    plt.ylabel("Bus Cycles (raw)")
+    plt.title("Bus Cycles over Time")
+    plt.legend()
+    plt.tight_layout()
+    plt.savefig(os.path.join(output_dir, "bus_cycles_trend.png"))
     plt.close()
 
 if __name__ == "__main__":

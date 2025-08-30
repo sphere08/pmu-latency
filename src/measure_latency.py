@@ -51,7 +51,7 @@ def save_to_csv(data, filename="../results/csv_files/latency_results.csv"):
         df.to_csv(filename, mode="a", index=False, header=False)
 
 if __name__ == "__main__":
-    runs = 10
+    runs = 30
     interval = 2
     duration = 1
 
